@@ -1,20 +1,21 @@
 var fs = require('fs');
+var request = require('request');
 
 module.exports = {
 	
-	pwd: function(){
+	pwd: function(file){
 	  	process.stdout.write(process.cwd());
 	  	process.stdout.write('\nprompt > ');  
 	}, 
 
-	date: function(){
+	date: function(file){
 		var date = new Date();
 		var dateString = date.toString();
 		process.stdout.write(dateString);
   		process.stdout.write('\nprompt > ');   
 	},
 
-	ls: function(){
+	ls: function(file){
 		fs.readdir('.', function(err, files) {
   			if (err) throw err;
   			files.forEach(function(file) {
@@ -22,5 +23,38 @@ module.exports = {
   			})
   		process.stdout.write("prompt > ");
 		});
+	},
+
+	echo: function(file){
+		process.stdout.write(file + '\n');
+		process.stdout.write("prompt > ");
+	},
+
+	cat: function(file){
+		fs.readFile(file, function(err, data){
+			if (err) throw err;
+			process.stdout.write(data + '\n');
+			process.stdout.write("prompt > ");
+		})
+	},
+
+	head: function(file){
+		fs.readFile(file, function(err, data){
+			if (err) throw err;
+			var contentString = 
+				data.toString().split("\n").slice(0,5).join('\n');
+			process.stdout.write(contentString);
+			process.stdout.write("prompt > ");
+		})
+	},
+
+	tail: function(file){
+		fs.readFile(file, function(err, data){
+			if (err) throw err;
+			var contentString = 
+				data.toString().split("\n").slice(-5).join('\n');
+			process.stdout.write(contentString + '\n');
+			process.stdout.write("prompt > ");
+		})
 	}
 };
