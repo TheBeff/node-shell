@@ -56,5 +56,14 @@ module.exports = {
 			process.stdout.write(contentString + '\n');
 			process.stdout.write("prompt > ");
 		})
+	},
+
+	curl: function(file){
+		request(file, function(error, response, body){
+			if(error) throw error;
+			if(!error && response.statusCode == 200){
+				process.stdout.write(body);
+			}
+		})
 	}
 };
