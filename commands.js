@@ -3,68 +3,67 @@ var request = require('request');
 
 module.exports = {
 	
-	pwd: function(file){
-	  	process.stdout.write(process.cwd());
-	  	process.stdout.write('\nprompt > ');  
+	pwd: function(file, done){
+	  	var output = process.cwd();
+	  	done(output);
+	  	// process.stdout.write(process.cwd());
+	  	// process.stdout.write('\nprompt > ');  
 	}, 
 
-	date: function(file){
+	date: function(file, done){
 		var date = new Date();
 		var dateString = date.toString();
-		process.stdout.write(dateString);
-  		process.stdout.write('\nprompt > ');   
+		done(dateString); 
 	},
 
-	ls: function(file){
+	ls: function(file, done){
+		var output = "";
 		fs.readdir('.', function(err, files) {
   			if (err) throw err;
   			files.forEach(function(file) {
-    			process.stdout.write(file.toString() + "\n");
+    			output += (file.toString() + '\n');
   			})
-  		process.stdout.write("prompt > ");
+  		done(output);
 		});
 	},
 
-	echo: function(file){
-		process.stdout.write(file + '\n');
-		process.stdout.write("prompt > ");
+	echo: function(file, done){
+		done(file);
 	},
 
-	cat: function(file){
+	cat: function(file, done){
 		fs.readFile(file, function(err, data){
 			if (err) throw err;
-			process.stdout.write(data + '\n');
-			process.stdout.write("prompt > ");
+			done(data);
 		})
 	},
 
-	head: function(file){
+	head: function(file, done){
 		fs.readFile(file, function(err, data){
 			if (err) throw err;
 			var contentString = 
 				data.toString().split("\n").slice(0,5).join('\n');
-			process.stdout.write(contentString);
-			process.stdout.write("prompt > ");
+			done(contentString);
 		})
 	},
 
-	tail: function(file){
+	tail: function(file, done){
 		fs.readFile(file, function(err, data){
 			if (err) throw err;
 			var contentString = 
 				data.toString().split("\n").slice(-5).join('\n');
-			process.stdout.write(contentString + '\n');
-			process.stdout.write("prompt > ");
+			done(contentString);
 		})
 	},
 
-	curl: function(file){
+	curl: function(file, done){
+		var output = "";
 		request(file, function(error, response, body){
 			if(error) throw error;
 			if(!error && response.statusCode == 200){
-				process.stdout.write(body + "\n");
+				output += body;
+				done(output);
 			}
-			process.stdout.write("prompt > ");
 		})
 	}
 };
