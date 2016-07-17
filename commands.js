@@ -62,8 +62,9 @@ module.exports = {
 		request(file, function(error, response, body){
 			if(error) throw error;
 			if(!error && response.statusCode == 200){
-				process.stdout.write(body);
+				process.stdout.write(body + "\n");
 			}
+			process.stdout.write("prompt > ");
 		})
 	}
 };
