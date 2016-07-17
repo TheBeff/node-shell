@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 module.exports = {
 	
 	pwd: function(){
@@ -9,7 +11,16 @@ module.exports = {
 		var date = new Date();
 		var dateString = date.toString();
 		process.stdout.write(dateString);
-
   		process.stdout.write('\nprompt > ');   
+	},
+
+	ls: function(){
+		fs.readdir('.', function(err, files) {
+  			if (err) throw err;
+  			files.forEach(function(file) {
+    			process.stdout.write(file.toString() + "\n");
+  			})
+  		process.stdout.write("prompt > ");
+		});
 	}
 };
